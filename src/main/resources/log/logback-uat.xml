@@ -6,10 +6,10 @@
     <!-- The FILE and ASYNC appenders are here as examples for a production configuration -->
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/demo/demo.log</file>
+        <file>logs/train/train.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 每小时滚动文件 -->
-            <fileNamePattern>logs/demo/demo.%d{yyyy-MM-dd_HH}.%i.log</fileNamePattern>
+            <fileNamePattern>logs/train/train.%d{yyyy-MM-dd_HH}.%i.log</fileNamePattern>
             <maxHistory>5</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy
                     class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -31,7 +31,7 @@
     </appender>
 
 
-    <logger name="com.hand.hcf.app.budget" level="DEBUG"/>
+    <logger name="com.hand.hcf.app.train" level="DEBUG"/>
     <logger name="com.hand.hcf" level="INFO"/>
     <logger name="javax.activation" level="ERROR"/>
     <logger name="javax.mail" level="ERROR"/>
