@@ -1,9 +1,9 @@
 // demo.groovy
 package script.db
 
-databaseChangeLog(logicalFilePath: 'demo.groovy') {
-    changeSet(id: '2017-05-29-demo', author: 'your.email@email.com') {
-        createTable(tableName: "demo") {
+databaseChangeLog(logicalFilePath: 'train.groovy') {
+    changeSet(id: '2017-05-29-train', author: 'your.email@email.com') {
+        createTable(tableName: "train") {
             column(name: 'id', type: 'BIGINT UNSIGNED', remarks: 'ID', autoIncrement: true) {
                 constraints(primaryKey: true)
             }

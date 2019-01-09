@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <property name="now" value="now()" dbms="mysql,h2"/>
+    <property name="now" value="sysdate" dbms="oracle"/>
+    <property name="autoIncrement" value="true" dbms="mysql,h2,postgresql,oracle"/>
+
+    <changeSet id="201709141000001" author="wenzhou.tang">
+        <createTable tableName="bgt_balance_query_header" remarks="预算余额查询方案头表">
+            <column name="id" type="bigint" remarks="主键ID">
+                <constraints
+                        nullable="false"
+                        primaryKey="true"
+                        primaryKeyName="pk_bgt_balance_query_header_id"/>
+            </column>
+            <column name="company_id" type="bigint" remarks="公司ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="condition_code" type="varchar(100)" remarks="方案代码">
+                <constraints nullable="false"/>
+            </column>
+            <column name="condition_name" type="varchar(255)" remarks="方案名称">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount_quarter_flag" type="varchar(30)" remarks="金额/数量"/>
+            <column name="period_summary_flag" type="boolean" remarks="期间汇总标志"/>
+            <column name="year_limit" type="int" remarks="年度"/>
+            <column name="quarter_lower_limit" type="int" remarks="季度从"/>
+            <column name="quarter_upper_limit" type="int" remarks="季度至"/>
+            <column name="period_lower_limit" type="varchar(100)" remarks="期间从"/>
+            <column name="period_upper_limit" type="varchar(100)" remarks="期间至"/>
+            <column name="version_number" type="int" remarks="版本号">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValue="${now}" remarks="创建日期">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="bigint" remarks="创建用户ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_updated_date" type="timestamp" defaultValue="${now}" remarks="最后更新日期">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_updated_by" type="bigint" remarks="最后更新用户ID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint tableName="bgt_balance_query_header"
+                             columnNames="condition_code"
+                             constraintName="bgt_balance_query_header_u1"/>
+
+        <createTable tableName="bgt_balance_query_line" remarks="预算余额查询方案行表">
+            <column name="id" type="bigint" remarks="主键ID">
+                <constraints
+                        nullable="false"
+                        primaryKey="true"
+                        primaryKeyName="pk_bgt_balance_query_line_id"/>
+            </column>
+            <column name="header_id" type="bigint" remarks="预算余额查询方案头表ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="parameter_type" type="varchar(100)" remarks="参数类型"/>
+            <column name="parameter_code" type="varchar(100)" remarks="参数编码"/>
+            <column name="parameter_value_id" type="bigint" remarks="参数值ID"/>
+            <column name="parameter_value_code" type="varchar(100)" remarks="参数值代码"/>
+            <column name="parameter_value_name" type="varchar(255)" remarks="参数值名称"/>
+            <column name="version_number" type="int" remarks="版本号">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValue="${now}" remarks="创建日期">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="bigint" remarks="创建用户ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_updated_date" type="timestamp" defaultValue="${now}" remarks="最后更新日期">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_updated_by" type="bigint" remarks="最后更新用户ID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="bgt_balance_query_id" remarks="预算余额查询参数类型-ID明细表">
+            <column name="session_id" type="varchar(50)" remarks="SESSION ID"/>
+            <column name="type" type="varchar(100)" remarks="参数代码">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id" type="bigint" remarks="ID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createIndex tableName="bgt_balance_query_id" indexName="idx_bgt_balance_query_id">
+            <column name="session_id"/>
+            <column name="type"/>
+            <column name="id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="201709141000002" author="wenzhou.tang">
+        <addColumn tableName="bgt_balance_query_header">
+            <column name="organization_id" type="bigint" remarks="预算组织ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="scenario_id" type="bigint" remarks="预算场景ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version_id" type="bigint" remarks="预算版本ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="structure_id" type="bigint" remarks="预算表ID">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="201709141000003" author="wenzhou.tang">
+        <createTable tableName="bgt_balance_query_parameter" remarks="预算余额查询方案参数明细表">
+            <column name="id" type="bigint" remarks="主键ID">
+                <constraints
+                        nullable="false"
+                        primaryKey="true"
+                        primaryKeyName="pk_bgt_balance_query_parameter"/>
+            </column>
+            <column name="header_id" type="bigint" remarks="预算余额查询方案头表ID"/>
+            <column name="line_id" type="bigint" remarks="预算余额查询方案行表ID"/>
+            <column name="parameter_code" type="varchar(100)" remarks="参数编码"/>
+            <column name="parameter_value_id" type="bigint" remarks="参数值ID"/>
+            <column name="parameter_value_code" type="varchar(100)" remarks="参数值代码"/>
+            <column name="parameter_value_name" type="varchar(255)" remarks="参数值名称"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="201709141000004" author="wenzhou.tang">
+        <dropColumn tableName="bgt_balance_query_line" columnName="parameter_value_id"/>
+        <dropColumn tableName="bgt_balance_query_line" columnName="parameter_value_code"/>
+        <dropColumn tableName="bgt_balance_query_line" columnName="parameter_value_name"/>
+        <addColumn tableName="bgt_balance_query_line">
+            <column name="is_all" type="boolean" defaultValue="0" remarks="查询所有标志"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="201804161000001" author="wenzhou.tang">
+        <createTable tableName="bgt_solution_header" remarks="预算余额查询方案头表">
+            <column name="id" type="bigint" remarks="主键ID">
+                <constraints
+                        nullable="false"
+                        primaryKey="true"
+                        primaryKeyName="pk_bgt_balance_solution_h_id"/>
+            </column>
+            <column name="set_of_books_id" type="bigint" remarks="账套ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="condition_code" type="varchar(100)" remarks="方案代码">
+                <constraints nullable="false"/>
+            </column>
+            <column name="condition_name" type="varchar(255)" remarks="方案名称">
+                <constraints nullable="false"/>
+            </column>
+            <column name="visible_user_scope" type="int" remarks="可见人员范围">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version_number" type="int" remarks="版本号">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deleted" type="boolean" remarks="删除标志">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValue="${now}" remarks="创建日期">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="bigint" remarks="创建用户ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_updated_date" type="timestamp" defaultValue="${now}" remarks="最后更新日期">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_updated_by" type="bigint" remarks="最后更新用户ID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint tableName="bgt_solution_header"
+                             columnNames="set_of_books_id,condition_code"
+                             constraintName="bgt_balance_solution_h_u1"/>
+
+        <createTable tableName="bgt_solution_line" remarks="预算余额查询方案行表">
+            <column name="id" type="bigint" remarks="主键ID">
+                <constraints
+                        nullable="false"
+                        primaryKey="true"
+                        primaryKeyName="pk_bgt_balance_solution_l_id"/>
+            </column>
+            <column name="header_id" type="bigint" remarks="预算余额查询方案头表ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="parameter_type" type="varchar(100)" remarks="参数类型">
+                <constraints nullable="false"/>
+            </column>
+            <column name="parameter_code" type="varchar(100)" remarks="参数编码">
+                <constraints nullable="false"/>
+            </column>
+            <column name="query_scope" type="int" remarks="查询范围">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version_number" type="int" remarks="版本号">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValue="${now}" remarks="创建日期">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="bigint" remarks="创建用户ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_updated_date" type="timestamp" defaultValue="${now}" remarks="最后更新日期">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_updated_by" type="bigint" remarks="最后更新用户ID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="bgt_solution_parameter" remarks="预算余额查询方案参数明细表">
+            <column name="id" type="bigint" remarks="主键ID">
+                <constraints
+                        nullable="false"
+                        primaryKey="true"
+                        primaryKeyName="pk_bgt_balance_solution_p_id"/>
+            </column>
+            <column name="header_id" type="bigint" remarks="预算余额查询方案头表ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="line_id" type="bigint" remarks="预算余额查询方案行表ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="parameter_code" type="varchar(100)" remarks="参数编码"/>
+            <column name="parameter_value_id" type="bigint" remarks="参数值ID"/>
+            <column name="parameter_value_code" type="varchar(100)" remarks="参数值代码"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="201804161000002" author="wenzhou.tang">
+        <createTable tableName="bgt_solution_assign_info" remarks="预算余额查询方案分配关系表">
+            <column name="id" type="bigint" remarks="主键ID">
+                <constraints
+                        nullable="false"
+                        primaryKey="true"
+                        primaryKeyName="pk_bgt_solution_a_info_id"/>
+            </column>
+            <column name="header_id" type="bigint" remarks="预算余额查询方案头ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="release_id" type="bigint" remarks="关联ID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint tableName="bgt_solution_assign_info"
+                             columnNames="header_id,release_id"
+                             constraintName="bgt_solution_assign_i_u1"/>
+    </changeSet>
+
+    <changeSet id="201809181531001" author="kai.zhang">
+        <renameColumn tableName="bgt_balance_query_line" oldColumnName="is_all" newColumnName="all_flag"/>
+    </changeSet>
+
+    <changeSet id="201810101010001" author="kai.zhang">
+        <renameTable oldTableName="bgt_balance_query_parameter" newTableName="bgt_balance_query_param"/>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,133 +1,134 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>hand-rongjing-hcf-train</groupId>
-    <artifactId>train</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <modelVersion>4.0.0</modelVersion>
+	<artifactId>train-service</artifactId>
+	<version>0.8.5-SNAPSHOT</version>
+	<packaging>war</packaging>
 
-    <!--choerodon-framework-parent dependency-->
-    <parent>
-        <groupId>io.choerodon</groupId>
-        <artifactId>choerodon-framework-parent</artifactId>
-        <version>0.8.0.RELEASE</version>
-    </parent>
+	<name>train-service</name>
+	<description>Demo project for Spring Boot</description>
 
-    <!--choerodon-starters dependency-->
-    <properties>
-        <choerodon.starters.version>0.6.0.RELEASE</choerodon.starters.version>
-    </properties>
-    <dependencies>
-        <!--spring boot-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-undertow</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-tomcat</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-eureka</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-config-client</artifactId>
-        </dependency>
+	<parent>
+		<groupId>com.hand.hcf.app</groupId>
+		<artifactId>hcf-app-parent</artifactId>
+		<version>0.8.5-SNAPSHOT</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
 
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-bus-kafka</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.cloud</groupId>
-                    <artifactId>spring-cloud-bus</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+		<java.version>1.8</java.version>
+		<!--<docker.image.prefix>registry.cloud.saas.hand-china.com/hec</docker.image.prefix>-->
+	</properties>
 
-        <!--choerodon starters-->
-        <dependency>
-            <groupId>io.choerodon</groupId>
-            <artifactId>choerodon-starter-oauth-resource</artifactId>
-            <version>${choerodon.starters.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.choerodon</groupId>
-            <artifactId>choerodon-starter-swagger</artifactId>
-            <version>${choerodon.starters.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.choerodon</groupId>
-            <artifactId>choerodon-starter-core</artifactId>
-            <version>${choerodon.starters.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.choerodon</groupId>
-            <artifactId>choerodon-starter-mybatis-mapper</artifactId>
-            <version>${choerodon.starters.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.choerodon</groupId>
-            <artifactId>choerodon-starter-bus</artifactId>
-            <version>${choerodon.starters.version}</version>
-        </dependency>
+	<dependencies>
 
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+		</dependency>
 
-        <!--mysql-->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.15</version>
+		</dependency>
+		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>itextpdf</artifactId>
+			<version>5.5.9</version>
+		</dependency>
 
+		<dependency>
+			<groupId>com.hand.hcf.app</groupId>
+			<artifactId>hcf-app-client</artifactId>
+			<version>0.8.5-SNAPSHOT</version>
+		</dependency>
+		<!-- RabbitMQ -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bus-amqp</artifactId>
+			<optional>true</optional>
+		</dependency>
+	</dependencies>
 
-        <!--监控相关依赖 -->
-        <dependency><!-- 如果服务需要监控功能则需要此依赖 -->
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-stream-binder-kafka</artifactId>
-        </dependency>
+	<build>
+		<finalName>budget</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>build-info</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>${jib-maven-plugin.version}</version>
+				<configuration>
+					<from>
+						<image>registry.cn-hangzhou.aliyuncs.com/choerodon-tools/javabase:0.5.0</image>
+					</from>
+					<to>
+						<image>${registry_url}/${docker.image.prefix}/${project.artifactId}:${project.version}-${ci_pipeline_id}</image>
+						<auth>
+							<username>${registry_username}</username>
+							<password>${registry_password}</password>
+						</auth>
+					</to>
+					<container>
+						<jvmFlags>
+							<jvmFlag>-Djava.security.edg=file:/dev/./urandom</jvmFlag>
+						</jvmFlags>
+						<mainClass>com.hand.hcf.app.train.ServiceApplication</mainClass>
+					</container>
+				</configuration>
+			</plugin>
+		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.xml</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+	</build>
+        <distributionManagement>
+            <repository>
+                <id>releases</id>
+                <url>http://116.228.77.183:25296/nexus/content/repositories/releases</url>
+            </repository>
+            <snapshotRepository>
+                <id>snapshots</id>
+                <url>http://116.228.77.183:25296/nexus/content/repositories/snapshots</url>
+            </snapshotRepository>
+        </distributionManagement>
+        <repositories>
+			<repository>
+				<id>hcf.snapshots</id>
+				<name>183maven</name>
+				<url>http://116.228.77.183:25296/nexus/content/groups/public</url>
+			</repository>
 
-        <dependency><!-- 如果服务需要hystrix监控功能则需要此依赖 -->
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-netflix-hystrix-stream</artifactId>
-        </dependency>
-
-        <dependency><!-- 如果服务需要zipkin监控功能则需要此依赖 -->
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-sleuth-stream</artifactId>
-        </dependency>
-
-        <!-- 添加cpu监控 -->
-        <dependency>
-            <groupId>io.choerodon</groupId>
-            <artifactId>choerodon-starter-hitoa</artifactId>
-            <version>${choerodon.starters.version}</version>
-        </dependency>
-        <!-- test -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-    </dependencies>
-
-    <build>
-        <finalName>app</finalName>
-    </build>
+			<repository>
+				<id>hcf.releases</id>
+				<name>183maven</name>
+				<url>http://116.228.77.183:25296/nexus/content/groups/public</url>
+			</repository>
+        </repositories>
 
 </project>
-
