@@ -1,10 +1,18 @@
 # demo
 
 
+
+
 git clone -b development https://code.choerodon.com.cn/hand-rongjing-hcf-train/train.git
 
 
-###本地启动项目配置环境变量：
+
+
+
+
+
+
+### 本地启动项目配置环境变量：
 eureka.client.enabled=false
 
 end=dev
