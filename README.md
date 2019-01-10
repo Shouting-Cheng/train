@@ -15,7 +15,7 @@ git clone -b development https://code.choerodon.com.cn/hand-rongjing-hcf-train/t
 ### 本地启动项目配置环境变量：
 eureka.client.enabled=false
 
-end=dev
+env=dev
 
 hcf.application.base.url=http://47.101.145.62:9081/base (注:如需要其他模块，可将变量及变量值中的base替换为相应applicationName)
 
