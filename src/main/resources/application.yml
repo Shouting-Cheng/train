@@ -17,3 +17,8 @@ hystrix:
       execution:
         isolation:
           strategy: SEMAPHORE
+hcf:
+  application:
+    base:
+      url:
+        http://47.101.145.62:9081/base
